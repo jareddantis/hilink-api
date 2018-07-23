@@ -132,18 +132,9 @@ class HwApi {
                             if (serverSig === pubKeySig) {
                                 // Server's RSA public key is valid, save RSA public key
                                 let lS = window.localStorage
-                                let rsaN = result.response.rsan[0]
-                                let rsaE = result.response.rsae[0]
-                                lS.setItem("rsan", rsaN)
-                                lS.setItem("rsae", rsaE)
-
-                                if (typeof document !== 'undefined') {
-                                    let rsaData = 'rsan=' + rsaN + ', rsae=' + rsaE
-                                    document.querySelector('h2').innerText = 'Logged in!'
-                                    document.querySelector('code').innerText = rsaData
-                                } else {
-                                    console.log('Server identity successfully verified.')
-                                }
+                                lS.setItem("rsan", result.response.rsan[0])
+                                lS.setItem("rsae", result.response.rsae[0])
+                                console.log('Server identity successfully verified.')
                             } else {
                                 rej(new Error('Server provided an invalid RSA public key.'))
                             }
@@ -158,13 +149,7 @@ class HwApi {
         }).catch((error) => {
             let errHead = 'Error while logging in'
             let errMsg = error.message
-
-            if (typeof document !== 'undefined') {
-                document.querySelector('h2').innerText = errHead
-                document.querySelector('code').innerText = errMsg
-            } else {
-                console.error(errHead + ': ' + errMsg)
-            }
+            console.error(errHead + ': ' + errMsg)
         })
 
         return veriToken
